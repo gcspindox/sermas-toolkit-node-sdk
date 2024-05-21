@@ -1,12 +1,12 @@
 {
-  "name": "@sermas/sermas-sdk",
+  "name": "@sermas/sermas-toolkit-node-sdk",
   "version": "1.0.0-alpha.1",
   "description": "Sermas SDK",
   "type": "module",
   "main": "src/index.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sermas-eu/sermas-sdk.git"
+    "url": "https://github.com/sermas-eu/sermas-toolkit-node-sdk.git"
   },
   "scripts": {
     "build": "tsc",
