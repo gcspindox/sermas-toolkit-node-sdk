@@ -6,6 +6,12 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./index.d.ts"
+    }
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
@@ -13,7 +19,8 @@
     "url": "https://github.com/sermas-eu/sermas-toolkit-node-sdk.git"
   },
   "scripts": {
-    "build": "tsc",
+    "clean": "rm -rf ./dist",
+    "build": "npm run clean && tsc && cp ./package.json README.md ./dist/",
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts"
   },
