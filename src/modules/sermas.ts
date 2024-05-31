@@ -25,7 +25,7 @@ export type SermasConfig = {
   SERMAS_APPID: string;
 };
 
-export class SermasApp {
+class SermasApp {
   private logger = createLogger(SermasApp.name);
   private baseUrl: string;
 
@@ -260,3 +260,5 @@ export class SermasApp {
     }
   }
 }
+
+export { SermasApp };

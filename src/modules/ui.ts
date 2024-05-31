@@ -12,7 +12,7 @@ import { SermasApp } from "./sermas.js";
 import { Store } from "./store.js";
 import { createLogger } from "../config/logger.js";
 
-export class UI {
+class UI {
   private sermas: SermasApp;
   private store: Store;
 
@@ -22,6 +22,8 @@ export class UI {
   constructor(sermas: SermasApp, store: Store) {
     this.sermas = sermas;
     this.store = store;
+
+    this.sermas.emitter.on("session", this.onSessionChange.bind(this));
   }
 
   // @OnEvent("session")
@@ -174,3 +176,5 @@ export class UI {
     return selection && this.backMenuOptions.indexOf(selection) > -1;
   }
 }
+
+export { UI };

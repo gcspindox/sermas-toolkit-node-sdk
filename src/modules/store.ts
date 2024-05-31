@@ -4,8 +4,7 @@ import { SermasApp } from "./sermas.js";
 import { uuidv4 } from "../config/util.js";
 import { BaseSessionWrapper } from "../dto/session.js";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export class Store {
+class Store {
   private readonly logger = createLogger(Store.name);
 
   private sermas: SermasApp;
@@ -15,6 +14,8 @@ export class Store {
 
   constructor(sermas: SermasApp) {
     this.sermas = sermas;
+
+    this.sermas.emitter.on("session", this.onSessionChange.bind(this));
   }
 
   // @OnEvent("session")
@@ -208,3 +209,5 @@ export class Store {
     return this.sessions[wrapper.sessionId];
   }
 }
+
+export { Store };

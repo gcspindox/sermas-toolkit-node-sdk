@@ -12,7 +12,7 @@ type ChatCompletionMessage = {
 /**
  * Wrapper for OpenAI client to implement sermas functionalities
  */
-export class OpenAIClient {
+class OpenAIClient {
   private logger = createLogger(OpenAIClient.name);
   private openAI: OpenAI;
 
@@ -65,3 +65,5 @@ export class OpenAIClient {
     }
   }
 }
+
+export { OpenAIClient };

@@ -8,7 +8,7 @@ import { SermasApp } from "./sermas.js";
 type ToolsSchemaValues = string | number | boolean | undefined;
 type ToolsSchemaParameters = Record<string, ToolsSchemaValues>;
 
-export class Tools {
+class Tools {
   private sermas: SermasApp;
 
   constructor(sermasApp: SermasApp) {
@@ -48,3 +48,5 @@ export class Tools {
     return values[parameterName];
   }
 }
+
+export { Tools };
