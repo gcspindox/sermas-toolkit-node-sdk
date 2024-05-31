@@ -1,6 +1,7 @@
 import axios, { isAxiosError } from "axios";
 import * as https from "https";
 import { defaults } from "../config/defaults.js";
+import { createLogger } from "../config/logger.js";
 
 export type AuthConfig = {
   PUBLIC_AUTH_URL?: string;
@@ -29,7 +30,7 @@ export const getAvatarToken = async (
   appId: string | null = null,
   authConfig: AuthConfig = defaults.auth,
 ) => {
-  const logger = console;
+  const logger = createLogger("getAvatarToken");
   const tokens: Record<string, TokenResponse | null> = {};
   let kioskToken: TokenResponse | null = null;
 
@@ -63,7 +64,7 @@ export const getAvatarToken = async (
     appId: string,
     clientId = "avatar",
   ): Promise<TokenResponse | null> => {
-    logger.log(`Fetch app token for appId=${appId} clientId=${clientId}`);
+    logger.info(`Fetch app token for appId=${appId} clientId=${clientId}`);
 
     const cacheKey = `${appId}-${clientId}`;
 
@@ -77,7 +78,7 @@ export const getAvatarToken = async (
     }
 
     if (tokens[cacheKey]) {
-      logger.log(`Using cached token for ${cacheKey}`);
+      logger.info(`Using cached token for ${cacheKey}`);
       return tokens[cacheKey];
     }
 
@@ -98,7 +99,7 @@ export const getAvatarToken = async (
 
       // expires 1min before
       const expiresIn = res.data.expires_in * 1000;
-      logger.log(
+      logger.info(
         `Token for ${appId} expires in ${Math.round(expiresIn / 60 / 60 / 1000)}min`,
       );
 
@@ -195,7 +196,7 @@ export const getAvatarTokenWithClientSecret = async (
   authConfig: AuthConfig = defaults.auth,
   clientSecret: string = "",
 ) => {
-  const logger = console;
+  const logger = createLogger("getAvatarTokenWithClientSecret");
   const tokens: Record<string, TokenResponse | null> = {};
 
   const PRIVATE_API_BASE_URL =
@@ -208,7 +209,7 @@ export const getAvatarTokenWithClientSecret = async (
     clientId = "avatar",
     clientSecret = "",
   ): Promise<TokenResponse | null> => {
-    logger.log(
+    logger.info(
       `Fetch app token for appId=${appId} clientId=${clientId} clientSecret=${clientSecret}`,
     );
 
@@ -227,7 +228,7 @@ export const getAvatarTokenWithClientSecret = async (
     }
 
     if (tokens[cacheKey]) {
-      logger.log(`Using cached token for ${cacheKey}`);
+      logger.info(`Using cached token for ${cacheKey}`);
       return tokens[cacheKey];
     }
 
@@ -246,7 +247,7 @@ export const getAvatarTokenWithClientSecret = async (
 
       // expires 1min before
       const expiresIn = res.data.expires_in * 1000;
-      logger.log(
+      logger.info(
         `Token for ${appId} expires in ${Math.round(expiresIn / 60 / 60 / 1000)}min`,
       );
 
