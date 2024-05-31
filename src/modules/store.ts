@@ -4,8 +4,9 @@ import { SermasApp } from "./sermas.js";
 import { uuidv4 } from "../config/util.js";
 import { BaseSessionWrapper } from "../dto/session.js";
 
-export class StoreService {
-  private readonly logger = createLogger(StoreService.name);
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export class Store {
+  private readonly logger = createLogger(Store.name);
 
   private sermas: SermasApp;
   private sessions: Record<string, unknown> = {};
@@ -19,9 +20,9 @@ export class StoreService {
   // @OnEvent("session")
   async onSessionChange(ev: SessionChangedDto) {
     if (!ev.record.sessionId) return;
+    const session = await this.saveSessionWrapper(ev);
     switch (ev.operation) {
       case "created":
-        const session = await this.saveSessionWrapper(ev);
         if (!session) {
           this.logger.warn(
             `Failed to get session for sessionId=${ev.record.sessionId}`,
@@ -41,6 +42,7 @@ export class StoreService {
   }
 
   private async lock<T = any>(sessionId: string, fn: () => Promise<any>) {
+    // eslint-disable-next-line no-async-promise-executor
     this.locks[sessionId] = new Promise<T>(async (resolve, reject) => {
       try {
         resolve(await fn());
@@ -78,7 +80,7 @@ export class StoreService {
         `${opId} Loading wrapper for sessionId=${context.sessionId}`,
       );
       const records = await this.sermas.findRecords({
-        appId: undefined,
+        appId: "",
         sessionId: [context.sessionId],
         userId: undefined,
       });
@@ -87,7 +89,7 @@ export class StoreService {
         this.logger.debug(
           `${opId} Wrapper exists for sessionId=${context.sessionId}`,
         );
-        return records.at(0).data as SessionWrapper;
+        return records[0].data as SessionWrapper;
       } else {
         this.logger.debug(
           `${opId} Wrapper not found for sessionId=${context.sessionId}`,
@@ -99,7 +101,7 @@ export class StoreService {
       );
 
       const storageId = uuidv4();
-      const sessionWrapper: SessionWrapper = {
+      const sessionWrapper = {
         ...context,
         appId: context.appId,
         sessionId: context.sessionId,
@@ -123,7 +125,7 @@ export class StoreService {
       }
 
       const record: SessionStorageRecordDto = {
-        appId: sessionWrapper.appId,
+        appId: sessionWrapper.appId!,
         sessionId: sessionWrapper.sessionId,
         data: sessionWrapper,
         userId: sessionWrapper.userId || undefined,
@@ -170,7 +172,9 @@ export class StoreService {
     return res?.data as SessionWrapper;
   }
 
-  async getSessionWrapper(sessionId: string) {
+  async getSessionWrapper(
+    sessionId: string,
+  ): Promise<BaseSessionWrapper | undefined> {
     if (!sessionId) {
       this.logger.debug(`sessionId is empty`);
       return;
@@ -183,7 +187,7 @@ export class StoreService {
       this.logger.debug(`loaded sessionId=${sessionId}`);
       this.sessions[sessionId] = session;
     }
-    return this.sessions[sessionId];
+    return this.sessions[sessionId] as BaseSessionWrapper;
   }
 
   async saveSessionWrapper(ev: SessionChangedDto) {
