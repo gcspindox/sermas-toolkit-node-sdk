@@ -6,16 +6,22 @@
   "files": [
     "dist"
   ],
-  "exports": "./dist/index.js",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "default": "./dist/esm/index.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sermas-eu/sermas-toolkit-node-sdk.git"
   },
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && tsc -p tsconfig.types.json",
+    "build:watch": "concurrently \"npx tsc -p tsconfig.cjs.json --watch\" \"npx tsc -p tsconfig.types.json --watch\"",
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts"
   },
@@ -33,6 +39,7 @@
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.9.0",
     "@typescript-eslint/parser": "^7.9.0",
+    "concurrently": "^8.2.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",

@@ -48,6 +48,8 @@ class SermasApp {
     this.clientSecret =
       sermasConfig.SERMAS_CLIENT_SECRET || defaults.sermas.SERMAS_APPID;
 
+    console.log("object");
+
     this.emitter = new EventEmitter2();
 
     this.initialize();
