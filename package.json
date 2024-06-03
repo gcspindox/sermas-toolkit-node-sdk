@@ -1,6 +1,6 @@
 {
   "name": "@sermas/sermas-toolkit-node-sdk",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-alpha.10",
   "description": "Sermas toolkit node SDK",
   "type": "module",
   "files": [
@@ -8,19 +8,19 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js",
-      "default": "./dist/esm/index.js"
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
     }
   },
+  "main": "./dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/sermas-eu/sermas-toolkit-node-sdk.git"
   },
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build": "npm run clean && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && tsc -p tsconfig.types.json",
+    "build": "npm run clean && tsup",
     "build:watch": "concurrently \"npx tsc -p tsconfig.cjs.json --watch\" \"npx tsc -p tsconfig.types.json --watch\"",
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts"
@@ -44,6 +44,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "prettier": "3.2.5",
+    "tsup": "^8.1.0",
     "tsx": "^4.10.5",
     "typescript": "^5.4.5"
   },
