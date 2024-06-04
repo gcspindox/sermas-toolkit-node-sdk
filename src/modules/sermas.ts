@@ -18,6 +18,7 @@ import {
   UpdateUserEventDto,
 } from "@sermas/api-client";
 import { defaults } from "../config/defaults.js";
+import { Logger } from "winston";
 
 export type SermasConfig = {
   SERMAS_BASE_URL: string;
@@ -27,7 +28,7 @@ export type SermasConfig = {
 };
 
 class SermasApp {
-  private logger = createLogger(SermasApp.name);
+  private logger: Logger;
   private baseUrl: string;
 
   private app: PlatformAppDto | null = null;
@@ -49,15 +50,16 @@ class SermasApp {
     this.clientSecret =
       sermasConfig.SERMAS_CLIENT_SECRET || defaults.sermas.SERMAS_APPID;
 
+    this.logger = createLogger(`SERMAS [${this.appId}]`);
+
     this.emitter = new EventEmitter2();
 
-    this.initialize();
     this.client = new SermasApiClient({
       baseURL: this.getBaseUrl(),
       appId: this.appId,
-      logger: createLogger("sermas-api-client"),
+      logger: createLogger(`SERMAS [${this.appId}] API CLIENT`),
     });
-    this.getApp();
+    this.initialize();
   }
 
   getBaseUrl() {
@@ -118,6 +120,7 @@ class SermasApp {
         ),
     );
 
+    await this.getApp();
     this.logger.info("Sermas initialization completed");
   }
 
