@@ -1,7 +1,4 @@
-import {
-  AppToolsDTO,
-  DialogueToolsRepositoryOptionsDto,
-} from "@sermas/api-client";
+import { AppToolsDTO, DialogueToolsRepositoryDto } from "@sermas/api-client";
 import { BaseSessionWrapper } from "../dto/session.js";
 import { SermasApp } from "./sermas.js";
 
@@ -16,19 +13,32 @@ class Tools {
   }
 
   async reset(session: BaseSessionWrapper) {
-    await this.sermas.setTools(session.sessionId, []);
+    await this.sermas.setTools({
+      appId: session.appId,
+      sessionId: session.sessionId,
+      repositoryId: session.sessionId,
+      tools: [],
+    });
   }
 
-  async set(session: BaseSessionWrapper, tools: AppToolsDTO[]) {
-    await this.sermas.setTools(session.sessionId, tools);
+  async set(
+    session: BaseSessionWrapper,
+    repository: DialogueToolsRepositoryDto,
+  ) {
+    repository.sessionId = session.sessionId;
+    repository.repositoryId =
+      (session.repositoryId as string) || session.sessionId;
+    await this.sermas.setTools(repository);
   }
 
   async add(
     session: BaseSessionWrapper,
-    tools: AppToolsDTO[],
-    options?: DialogueToolsRepositoryOptionsDto,
+    repository: DialogueToolsRepositoryDto,
   ) {
-    await this.sermas.addTools(session.sessionId, tools, options);
+    repository.sessionId = session.sessionId;
+    repository.repositoryId =
+      (session.repositoryId as string) || session.sessionId;
+    await this.sermas.addTools(repository);
   }
 
   getSchemaValues<T extends ToolsSchemaParameters = ToolsSchemaParameters>(

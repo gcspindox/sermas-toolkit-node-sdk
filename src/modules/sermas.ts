@@ -2,10 +2,11 @@ import { createLogger } from "../config/logger.js";
 import { EventEmitter2 } from "eventemitter2";
 import {
   AgentChangedDto,
+  AgentEvaluatePromptDto,
   AppToolsDTO,
   DialogueMessageDto,
   DialogueToolTriggeredEventDto,
-  DialogueToolsRepositoryOptionsDto,
+  DialogueToolsRepositoryDto,
   PlatformAppDto,
   SermasApiClient,
   SessionChangedDto,
@@ -47,8 +48,6 @@ class SermasApp {
       sermasConfig.SERMAS_CLIENT_ID || defaults.sermas.SERMAS_CLIENT_SECRET;
     this.clientSecret =
       sermasConfig.SERMAS_CLIENT_SECRET || defaults.sermas.SERMAS_APPID;
-
-    console.log("object");
 
     this.emitter = new EventEmitter2();
 
@@ -148,6 +147,11 @@ class SermasApp {
         this.logger.error(`Subscribe failed: ${e.stack}`);
       });
   }
+  async prompt(prompt: AgentEvaluatePromptDto) {
+    return await this.client.api.session.prompt({
+      requestBody: prompt,
+    });
+  }
 
   async sendChatMessage(ev: DialogueMessageDto) {
     await this.client.api.dialogue.chatMessage({
@@ -182,28 +186,20 @@ class SermasApp {
     this.logger.debug("Updated tools");
   }
 
-  async setTools(repositoryId: string, tools: AppToolsDTO[]) {
+  async setTools(repository: DialogueToolsRepositoryDto) {
     await this.client.api.dialogue.setTools({
-      repositoryId,
-      requestBody: {
-        repositoryId,
-        appId: this.appId,
-        tools,
-      },
+      repositoryId: repository.repositoryId!,
+      requestBody: repository,
     });
     this.logger.debug("Updated tools");
   }
 
-  async addTools(
-    repositoryId: string,
-    tools: AppToolsDTO[],
-    options?: DialogueToolsRepositoryOptionsDto,
-  ) {
+  async addTools(repository: DialogueToolsRepositoryDto) {
     await this.client.api.dialogue.addTools({
-      repositoryId,
-      requestBody: { repositoryId, appId: this.appId, tools, options },
+      repositoryId: repository.repositoryId!,
+      requestBody: repository,
     });
-    this.logger.debug("Updated tools");
+    this.logger.debug("Add tools");
   }
 
   async readSession(sessionId: string): Promise<SessionDto | null> {
