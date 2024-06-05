@@ -15,9 +15,9 @@ import {
   UIContentDto,
   UIInteractionEventDto,
   UpdateUserEventDto,
+  Logger,
 } from "@sermas/api-client";
 import { defaults } from "../config/defaults.js";
-import { Logger } from "@sermas/api-client";
 
 export type SermasConfig = {
   SERMAS_BASE_URL: string;

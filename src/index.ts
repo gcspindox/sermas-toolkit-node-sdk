@@ -10,3 +10,5 @@ export { SermasApp } from "./modules/sermas.js";
 
 export type { OpenAIConfig } from "./modules/openai.js";
 export type { SermasConfig } from "./modules/sermas.js";
+
+export { BaseSessionWrapper } from "./dto/session.js";

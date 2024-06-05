@@ -1,4 +1,4 @@
-import { createLogger } from "../config/logger.js";
+import { Logger } from "@sermas/api-client";
 import OpenAI, { ClientOptions } from "openai";
 
 export type OpenAIConfig = {
@@ -13,7 +13,7 @@ type ChatCompletionMessage = {
  * Wrapper for OpenAI client to implement sermas functionalities
  */
 class OpenAIClient {
-  private logger = createLogger(`SERMAS SDK OpenAIClient`);
+  private logger = new Logger(`SERMAS SDK OpenAIClient`);
   private openAI: OpenAI;
 
   constructor(openAIConfig: OpenAIConfig) {

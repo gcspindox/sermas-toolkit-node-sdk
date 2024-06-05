@@ -1,24 +1,23 @@
-import { createLogger } from "../config/logger.js";
-import { SessionChangedDto, SessionStorageRecordDto } from "@sermas/api-client";
+import {
+  Logger,
+  SessionChangedDto,
+  SessionStorageRecordDto,
+} from "@sermas/api-client";
 import { SermasApp } from "./sermas.js";
 import { uuidv4 } from "../config/util.js";
 import { BaseSessionWrapper } from "../dto/session.js";
-import { Logger } from "winston";
 
 class Store {
-  private readonly logger: Logger | Console;
+  private readonly logger: Logger;
 
   private sermas: SermasApp;
   private sessions: Record<string, unknown> = {};
 
   private locks: { [sessionId: string]: Promise<any> } = {};
 
-  constructor(
-    sermas: SermasApp,
-    logger: Logger | Console | undefined = undefined,
-  ) {
+  constructor(sermas: SermasApp, logger: Logger | undefined = undefined) {
     this.sermas = sermas;
-    this.logger = logger || createLogger(`SERMAS SDK Store`);
+    this.logger = logger || new Logger(`SERMAS SDK Store`);
 
     this.sermas.emitter.on("session", this.onSessionChange.bind(this));
   }
@@ -209,7 +208,7 @@ class Store {
     });
 
     this.sessions[wrapper.sessionId] = wrapper;
-    this.logger.info(`Added session ${wrapper.sessionId}`);
+    this.logger.debug(`Added session ${wrapper.sessionId}`);
 
     return this.sessions[wrapper.sessionId];
   }

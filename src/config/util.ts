@@ -1,9 +1,9 @@
 import * as fs from "fs/promises";
-import { createLogger } from "./logger.js";
+import { Logger } from "@sermas/api-client";
 
 export { v4 as uuidv4 } from "uuid";
 
-const logger = createLogger("util");
+const logger = new Logger("util");
 
 export const saveJSON = (filename: string, dataset: Record<string, unknown>) =>
   fs.writeFile(filename, JSON.stringify(dataset, null, 2));
