@@ -1,4 +1,3 @@
-import { createLogger } from "../config/logger.js";
 import { EventEmitter2 } from "eventemitter2";
 import {
   AgentChangedDto,
@@ -18,7 +17,7 @@ import {
   UpdateUserEventDto,
 } from "@sermas/api-client";
 import { defaults } from "../config/defaults.js";
-import { Logger } from "winston";
+import { Logger } from "@sermas/api-client";
 
 export type SermasConfig = {
   SERMAS_BASE_URL: string;
@@ -28,7 +27,7 @@ export type SermasConfig = {
 };
 
 class SermasApp {
-  private logger: Logger | Console;
+  private logger: Logger;
   private baseUrl: string;
 
   private app: PlatformAppDto | null = null;
@@ -44,8 +43,7 @@ class SermasApp {
   constructor(
     sermasConfig: SermasConfig,
     emitter: EventEmitter2,
-    logger: Logger | Console | undefined = undefined,
-    apiClientLogger: Logger | Console = console,
+    logger: Logger = new Logger("SERMAS SDK"),
   ) {
     this.baseUrl =
       sermasConfig.SERMAS_BASE_URL || defaults.sermas.SERMAS_BASE_URL;
@@ -55,14 +53,14 @@ class SermasApp {
     this.clientSecret =
       sermasConfig.SERMAS_CLIENT_SECRET || defaults.sermas.SERMAS_APPID;
 
-    this.logger = logger || createLogger(`SERMAS SDK [${this.appId}]`);
+    this.logger = logger;
 
     this.emitter = emitter || new EventEmitter2();
 
     this.client = new SermasApiClient({
       baseURL: this.getBaseUrl(),
       appId: this.appId,
-      logger: apiClientLogger,
+      logger,
     });
     this.initialize();
   }
@@ -126,7 +124,7 @@ class SermasApp {
     );
 
     await this.getApp();
-    this.logger.info("Sermas initialization completed");
+    this.logger.debug("Sermas initialization completed");
   }
 
   private async setupSermasClient() {
