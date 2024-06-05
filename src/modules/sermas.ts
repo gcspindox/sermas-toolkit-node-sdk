@@ -43,6 +43,7 @@ class SermasApp {
 
   constructor(
     sermasConfig: SermasConfig,
+    emitter: EventEmitter2,
     logger: Logger | Console | undefined = undefined,
     apiClientLogger: Logger | Console = console,
   ) {
@@ -56,7 +57,7 @@ class SermasApp {
 
     this.logger = logger || createLogger(`SERMAS SDK [${this.appId}]`);
 
-    this.emitter = new EventEmitter2();
+    this.emitter = emitter || new EventEmitter2();
 
     this.client = new SermasApiClient({
       baseURL: this.getBaseUrl(),
