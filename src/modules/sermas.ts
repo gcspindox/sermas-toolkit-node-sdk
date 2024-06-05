@@ -28,7 +28,7 @@ export type SermasConfig = {
 };
 
 class SermasApp {
-  private logger: Logger;
+  private logger: Logger | Console;
   private baseUrl: string;
 
   private app: PlatformAppDto | null = null;
@@ -41,7 +41,11 @@ class SermasApp {
   public emitter: EventEmitter2;
   public subs: (() => void)[] = [];
 
-  constructor(sermasConfig: SermasConfig) {
+  constructor(
+    sermasConfig: SermasConfig,
+    logger: Logger | Console | undefined = undefined,
+    apiClientLogger: Logger | Console = console,
+  ) {
     this.baseUrl =
       sermasConfig.SERMAS_BASE_URL || defaults.sermas.SERMAS_BASE_URL;
     this.appId = sermasConfig.SERMAS_APPID || defaults.sermas.SERMAS_CLIENT_ID;
@@ -50,14 +54,14 @@ class SermasApp {
     this.clientSecret =
       sermasConfig.SERMAS_CLIENT_SECRET || defaults.sermas.SERMAS_APPID;
 
-    this.logger = createLogger(`SERMAS [${this.appId}]`);
+    this.logger = logger || createLogger(`SERMAS SDK [${this.appId}]`);
 
     this.emitter = new EventEmitter2();
 
     this.client = new SermasApiClient({
       baseURL: this.getBaseUrl(),
       appId: this.appId,
-      logger: createLogger(`SERMAS [${this.appId}] API CLIENT`),
+      logger: apiClientLogger,
     });
     this.initialize();
   }

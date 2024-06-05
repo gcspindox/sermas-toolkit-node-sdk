@@ -11,17 +11,24 @@ import { BaseSessionWrapper } from "../dto/session.js";
 import { SermasApp } from "./sermas.js";
 import { Store } from "./store.js";
 import { createLogger } from "../config/logger.js";
+import { Logger } from "winston";
 
 class UI {
   private sermas: SermasApp;
   private store: Store;
 
-  private readonly logger = createLogger(UI.name);
+  private readonly logger: Logger | Console;
   private backMenuOptions: string[] = [];
 
-  constructor(sermas: SermasApp, store: Store) {
+  constructor(
+    sermas: SermasApp,
+    store: Store,
+    logger: Logger | Console | undefined = undefined,
+  ) {
     this.sermas = sermas;
     this.store = store;
+
+    this.logger = logger || createLogger(`SERMAS SDK UI`);
 
     this.sermas.emitter.on("session", this.onSessionChange.bind(this));
   }

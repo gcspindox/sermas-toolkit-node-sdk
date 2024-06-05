@@ -3,17 +3,22 @@ import { SessionChangedDto, SessionStorageRecordDto } from "@sermas/api-client";
 import { SermasApp } from "./sermas.js";
 import { uuidv4 } from "../config/util.js";
 import { BaseSessionWrapper } from "../dto/session.js";
+import { Logger } from "winston";
 
 class Store {
-  private readonly logger = createLogger(Store.name);
+  private readonly logger: Logger | Console;
 
   private sermas: SermasApp;
   private sessions: Record<string, unknown> = {};
 
   private locks: { [sessionId: string]: Promise<any> } = {};
 
-  constructor(sermas: SermasApp) {
+  constructor(
+    sermas: SermasApp,
+    logger: Logger | Console | undefined = undefined,
+  ) {
     this.sermas = sermas;
+    this.logger = logger || createLogger(`SERMAS SDK Store`);
 
     this.sermas.emitter.on("session", this.onSessionChange.bind(this));
   }

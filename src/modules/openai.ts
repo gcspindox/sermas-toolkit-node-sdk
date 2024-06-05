@@ -13,7 +13,7 @@ type ChatCompletionMessage = {
  * Wrapper for OpenAI client to implement sermas functionalities
  */
 class OpenAIClient {
-  private logger = createLogger(OpenAIClient.name);
+  private logger = createLogger(`SERMAS SDK OpenAIClient`);
   private openAI: OpenAI;
 
   constructor(openAIConfig: OpenAIConfig) {
