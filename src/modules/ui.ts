@@ -3,6 +3,7 @@ import {
   ButtonsUIContentDto,
   Logger,
   SessionChangedDto,
+  SupportedContentTypes,
   UIContentDto,
   UIContentOptionsDto,
 } from "@sermas/api-client";
@@ -170,6 +171,23 @@ class UI {
       },
       content: { src: data, alt: "no image", width, height },
       contentType: "image",
+    };
+    await this.sermas.sendUiContent(ev);
+  }
+
+  async sendQrCodeScanner(session: BaseSessionWrapper) {
+    this.logger.debug(
+      `Send image sessionId=${session.sessionId} appId=${session.appId}`,
+    );
+    const ev: UIContentDto = {
+      ...session,
+      metadata: {},
+      options: {
+        clearScreen: false,
+        stopSpeech: false,
+      },
+      content: {},
+      contentType: "qrcode-scanner" as SupportedContentTypes,
     };
     await this.sermas.sendUiContent(ev);
   }
