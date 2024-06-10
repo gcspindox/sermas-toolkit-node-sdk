@@ -31,7 +31,7 @@ class SermasApp {
   private baseUrl: string;
 
   private app: PlatformAppDto | null = null;
-  private client: SermasApiClient;
+  public client: SermasApiClient;
 
   private clientId: string;
   private clientSecret: string;
