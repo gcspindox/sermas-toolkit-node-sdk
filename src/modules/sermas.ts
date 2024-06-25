@@ -14,7 +14,6 @@ import {
   SessionStorageSearchDto,
   UIContentDto,
   UIInteractionEventDto,
-  UpdateUserEventDto,
   Logger,
 } from "@sermas/api-client";
 import { defaults } from "../config/defaults.js";
@@ -73,13 +72,6 @@ class SermasApp {
     // return await this.getClientCredentials();
 
     await this.setupSermasClient();
-
-    this.addSub(
-      async () =>
-        await this.client.events.auth.onUserLogin((ev: UpdateUserEventDto) => {
-          this.logger.debug(`User login: ${ev}`);
-        }),
-    );
 
     this.addSub(
       async () =>
