@@ -3,9 +3,6 @@
   "version": "1.0.0-alpha.30",
   "description": "Sermas toolkit node SDK",
   "type": "module",
-  "files": [
-    "dist"
-  ],
   "exports": {
     ".": {
       "types": "./index.d.ts",
