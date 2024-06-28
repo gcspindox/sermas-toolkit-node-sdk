@@ -3,14 +3,17 @@
   "version": "1.0.0-alpha.31",
   "description": "Sermas toolkit node SDK",
   "type": "module",
+  "main": "./index.cjs",
+  "module": "./index.js",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
-      "types": "./index.d.ts",
       "require": "./index.cjs",
-      "import": "./index.js"
-    }
+      "import": "./index.js",
+      "types": "./index.d.ts"
+    },
+    "./package.json": "./package.json"
   },
-  "main": "./index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/sermas-eu/sermas-toolkit-node-sdk.git"
