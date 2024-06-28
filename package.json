@@ -8,25 +8,25 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
+      "types": "./index.d.ts",
+      "require": "./index.cjs",
+      "import": "./index.js"
     }
   },
-  "main": "./dist/index.js",
+  "main": "./index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/sermas-eu/sermas-toolkit-node-sdk.git"
   },
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build": "npm run clean && tsup",
+    "build": "npm run clean && tsup && cp package.json README.md LICENSE dist/",
     "build:watch": "tsup --watch",
-    "start": "node dist/index.js",
+    "start": "node index.js",
     "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
-    "@sermas/api-client": "^1.0.0-alpha.73",
+    "@sermas/api-client": "^1.0.0-alpha.75",
     "axios": "^1.7.1",
     "eventemitter2": "^6.4.9",
     "openai": "^4.47.2",
