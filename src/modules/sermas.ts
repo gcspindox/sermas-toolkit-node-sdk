@@ -1,4 +1,4 @@
-import { EventEmitter2 } from "eventemitter2";
+import ee2 from "eventemitter2";
 import {
   AgentChangedDto,
   AgentEvaluatePromptDto,
@@ -36,12 +36,12 @@ class SermasApp {
   private clientSecret: string;
   private appId: string;
 
-  public emitter: EventEmitter2;
+  public emitter: ee2.EventEmitter2;
   public subs: (() => void)[] = [];
 
   constructor(
     sermasConfig: SermasConfig,
-    emitter: EventEmitter2,
+    emitter: ee2.EventEmitter2,
     logger: Logger = new Logger("SERMAS SDK"),
   ) {
     this.baseUrl =
@@ -54,7 +54,7 @@ class SermasApp {
 
     this.logger = logger;
 
-    this.emitter = emitter || new EventEmitter2();
+    this.emitter = emitter || new ee2.EventEmitter2();
 
     this.client = new SermasApiClient({
       baseURL: this.getBaseUrl(),
