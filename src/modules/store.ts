@@ -146,6 +146,16 @@ class Store {
     });
   }
 
+  async getSession(sessionId: string) {
+    return await this.sermas.client.api.session.readSession({ sessionId });
+  }
+
+  async updateSession(session: any) {
+    return await this.sermas.client.api.session.updateSession({
+      requestBody: session,
+    });
+  }
+
   async saveSession<SessionWrapper extends BaseSessionWrapper>(
     session: SessionWrapper,
   ): Promise<SessionWrapper | null> {
