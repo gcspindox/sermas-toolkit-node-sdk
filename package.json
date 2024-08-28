@@ -1,6 +1,6 @@
 {
   "name": "@sermas/sermas-toolkit-node-sdk",
-  "version": "1.0.0-alpha.45",
+  "version": "1.0.0-alpha.48",
   "description": "Sermas toolkit node SDK",
   "type": "module",
   "main": "./index.cjs",
@@ -26,7 +26,7 @@
     "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
-    "@sermas/api-client": "^1.0.0-alpha.105",
+    "@sermas/api-client": "^1.0.0-alpha.109",
     "axios": "^1.7.1",
     "eventemitter2": "^6.4.9",
     "openai": "^4.47.2",
