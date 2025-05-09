@@ -1,6 +1,6 @@
 {
   "name": "@sermas/sermas-toolkit-node-sdk",
-  "version": "1.0.0-alpha.110",
+  "version": "1.0.0-alpha.111",
   "description": "Sermas toolkit node SDK",
   "type": "module",
   "main": "./index.cjs",
