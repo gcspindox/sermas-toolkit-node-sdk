@@ -80,7 +80,7 @@ class UI {
   async sendAgentMessage(
     session: BaseSessionWrapper,
     message: string,
-    messageLanguage: string,
+    messageLanguage?: string,
   ) {
     const app = await this.sermas.getApp();
 
@@ -100,7 +100,7 @@ class UI {
       appId: app.appId,
       actor: "agent",
       gender,
-      language: messageLanguage,
+      language: messageLanguage || session.language,
       chunkId: this.getChunkId(),
     });
   }
@@ -124,7 +124,10 @@ class UI {
     const ev: ButtonsUIContentDto = {
       ...session,
       metadata,
-      options,
+      options: {
+        ...options,
+        language: options.language || session.language,
+      },
       content: {
         label,
         list: list.map((button) => {
