@@ -100,7 +100,7 @@ class UI {
       appId: app.appId,
       actor: "agent",
       gender,
-      language: messageLanguage || session.language,
+      language: messageLanguage,
       chunkId: this.getChunkId(),
     });
   }
@@ -126,7 +126,7 @@ class UI {
       metadata,
       options: {
         ...options,
-        language: options.language || session.language,
+        language: options.language || undefined,
       },
       content: {
         label,
@@ -153,7 +153,7 @@ class UI {
       contentType: "clear-screen",
     };
     await this.sermas.sendUiContent(ev);
-    await sleep(500);
+    await sleep(200);
   }
 
   async sendImage(
