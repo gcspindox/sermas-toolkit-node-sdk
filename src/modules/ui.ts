@@ -80,7 +80,7 @@ class UI {
   async sendAgentMessage(
     session: BaseSessionWrapper,
     message: string,
-    messageLanguage: string,
+    messageLanguage?: string,
   ) {
     const app = await this.sermas.getApp();
 
@@ -124,7 +124,10 @@ class UI {
     const ev: ButtonsUIContentDto = {
       ...session,
       metadata,
-      options,
+      options: {
+        ...options,
+        language: options.language || undefined,
+      },
       content: {
         label,
         list: list.map((button) => {
@@ -150,7 +153,7 @@ class UI {
       contentType: "clear-screen",
     };
     await this.sermas.sendUiContent(ev);
-    await sleep(500);
+    await sleep(200);
   }
 
   async sendImage(
