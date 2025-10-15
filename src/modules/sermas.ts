@@ -1,4 +1,3 @@
-import ee2 from "eventemitter2";
 import {
   AgentChangedDto,
   AgentEvaluatePromptDto,
@@ -6,6 +5,7 @@ import {
   DialogueMessageDto,
   DialogueToolTriggeredEventDto,
   DialogueToolsRepositoryDto,
+  Logger,
   PlatformAppDto,
   SermasApiClient,
   SessionChangedDto,
@@ -14,8 +14,8 @@ import {
   SessionStorageSearchDto,
   UIContentDto,
   UIInteractionEventDto,
-  Logger,
 } from "@sermas/api-client";
+import ee2 from "eventemitter2";
 import { defaults } from "../config/defaults.js";
 
 export type SermasConfig = {
@@ -160,7 +160,8 @@ class SermasApp {
   }
 
   async sendUiContent(ev: UIContentDto) {
-    await this.client.events.ui.content(ev);
+    // await this.client.events.ui.content(ev);
+    await this.client.api.ui.showContent({ requestBody: ev });
   }
 
   async getApp() {

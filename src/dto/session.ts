@@ -4,4 +4,5 @@ export interface BaseSessionWrapper {
   appId: string;
   sessionId: string;
   userId: string;
+  language?: string;
 }
